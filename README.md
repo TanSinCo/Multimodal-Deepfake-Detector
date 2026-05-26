@@ -1,17 +1,18 @@
 
 # Multimodal Deepfake Detection System
+````md
 
 ## Overview
 
-This project is a multimodal AI-based deepfake detection system designed for robust video forgery analysis using:
+This project is an AI-powered multimodal deepfake detection system developed using Deep Learning and Computer Vision techniques. The system analyzes manipulated videos using multiple modalities including:
 
 - Spatial facial features
 - Temporal inconsistencies
-- Physiological rPPG signals
-- Eye blink analysis
-- Facial micro-motion analysis
+- rPPG physiological signals
+- Eye blink patterns
+- Facial motion analysis
 
-The system was developed as a final-semester deep learning and computer vision project with a focus on engineering depth, multimodal fusion, and practical AI pipeline development.
+The goal of the project is to improve robustness against modern deepfake generation techniques by combining visual and biological cues instead of relying only on RGB frames.
 
 ---
 
@@ -19,121 +20,216 @@ The system was developed as a final-semester deep learning and computer vision p
 
 ## Multimodal Detection Pipeline
 
-The system combines multiple modalities:
+The system combines multiple feature modalities:
 
-1. RGB Spatial Features
-2. Temporal Sequence Learning
-3. Remote Photoplethysmography (rPPG)
-4. Blink Signal Analysis
-5. Facial Motion Signal Analysis
-
----
-
-# Architecture
-
-Video
-→ Frame Extraction
-→ Face Detection
-→ MediaPipe Face Mesh
-→ ROI Extraction
-→ Signal Processing
-→ Multimodal Feature Fusion
-→ Deepfake Classification
+- RGB Spatial Features
+- Temporal Sequence Learning
+- Remote Photoplethysmography (rPPG)
+- Blink Signal Analysis
+- Facial Motion Analysis
 
 ---
 
-# Models Used
+# System Architecture
+
+```text
+MP4 Video
+   ↓
+Frame Extraction
+   ↓
+Face Detection + MediaPipe Face Mesh
+   ↓
+ROI Extraction
+   ↓
+Feature Extraction
+   ├── Spatial Features
+   ├── Temporal Features
+   ├── rPPG Signals
+   ├── Blink Features
+   └── Motion Features
+   ↓
+Multimodal Fusion Model
+   ↓
+REAL / FAKE Prediction
+````
+
+---
+
+# Model Architecture
 
 ## Spatial Encoder
-- CNN-based facial feature extraction
+
+CNN-based facial feature extraction
 
 ## Temporal Modeling
-- LSTM sequence learning
 
-## rPPG Network
-- Conv1D physiological signal encoder
+LSTM-based sequence learning
+
+## rPPG Encoder
+
+Conv1D physiological signal encoder
 
 ## Signal Encoders
-- Blink signal encoder
-- Motion signal encoder
 
-## Final Fusion Model
-- Multimodal feature fusion
-- Binary classification head
+* Blink signal encoder
+* Motion signal encoder
+
+## Fusion Classifier
+
+Multimodal feature fusion followed by binary classification
 
 ---
 
 # Dataset
 
-- FaceForensics++ style dataset
-- Real/Fake video classification
-- ~2000 source videos
-- Compressed video setting
+The model was trained and evaluated using multiple benchmark deepfake datasets:
+
+* FaceForensics++
+* Celeb-DF-v2
+* UADFV
+
+### Training Strategy
+
+* Initial training on FaceForensics++
+* Fine-tuning on Celeb-DF-v2
+* Evaluation on UADFV unseen dataset
 
 ---
 
 # Technologies Used
 
-- Python
-- PyTorch
-- OpenCV
-- MediaPipe
-- NumPy
-- Scikit-learn
-- Matplotlib
-- CUDA GPU Training
+* Python
+* PyTorch
+* OpenCV
+* MediaPipe
+* NumPy
+* Scikit-learn
+* Matplotlib
+* Gradio
+* CUDA GPU Training
 
 ---
 
-# Results
+# Final Results
 
-## Final Metrics
+| Metric    | Score  |
+| --------- | ------ |
+| Accuracy  | 88.80% |
+| Precision | 85.19% |
+| Recall    | 97.18% |
+| F1-Score  | 90.79% |
 
-- Accuracy: ~79%
-- F1 Score: ~0.80
+### Threshold Used
+
+* 0.45 classification threshold
+
+---
+
+# Result Visualizations
+
+## Confusion Matrix
+
+![Confusion Matrix](results/confusion_matrix.png)
+
+## ROC Curve
+
+![ROC Curve](results/roc_curve.png)
+
+## Training Loss Curve
+
+![Loss Curve](results/training_loss_curve.png)
+
+## Validation Accuracy Curve
+
+![Accuracy Curve](results/validation_accuracy_curve.png)
 
 ---
 
 # Project Structure
 
-src/
+```text
+Multimodal-Deepfake-Detector/
 │
-├── models/
-├── preprocess/
-├── final_train.py
-├── final_inference.py
-├── evaluate.py
+├── checkpoints/
+│   └── best_model.pth
 │
-results/
+├── results/
+│   ├── confusion_matrix.png
+│   ├── roc_curve.png
+│   ├── training_loss_curve.png
+│   └── validation_accuracy_curve.png
 │
-├── confusion_matrix.png
-├── roc_curve.png
+├── src/
+│   ├── models/
+│   ├── preprocess/
+│   ├── app.py
+│   ├── dataset.py
+│   ├── evaluate.py
+│   ├── final_train.py
+│   ├── final_inference.py
+│   └── predict_video.py
+│
+├── README.md
+└── .gitignore
+```
 
 ---
 
 # Key Engineering Challenges Solved
 
-- Variable sequence length handling
-- MediaPipe preprocessing failures
-- Multimodal tensor synchronization
-- PyTorch serialization issues
-- Large-scale cache preprocessing
-- Memory optimization on Kaggle
-- Corrupted cache recovery
-- GPU-compatible training pipeline
+* Variable sequence length handling
+* MediaPipe preprocessing failures
+* Multimodal tensor synchronization
+* PyTorch serialization issues
+* Large-scale cache preprocessing
+* GPU memory optimization on Kaggle
+* Corrupted cache recovery
+* Stable multimodal training pipeline
 
 ---
 
 # Future Improvements
 
-- Vision Transformer integration
-- Audio-visual fusion
-- Real-time webcam inference
-- Attention-based fusion
-- Deployment with Streamlit/Gradio
+* Vision Transformer integration
+* Audio-visual fusion
+* Real-time webcam inference
+* Attention-based fusion
+* Improved lightweight deployment
+* Real-time streaming inference
+
+---
+
+# Installation
+
+```bash
+git clone https://github.com/TanSinCo/Multimodal-Deepfake-Detector.git
+
+cd Multimodal-Deepfake-Detector
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+# Inference
+
+Run Gradio application:
+
+```bash
+python src/app.py
+```
 
 ---
 
 # Author
 
 Final Semester Deep Learning & Computer Vision Project
+
+Developed using PyTorch, MediaPipe, and Multimodal Deep Learning techniques.
+
+```
+```
